@@ -8,9 +8,11 @@ const express_1 = __importDefault(require("express"));
 const db_1 = __importDefault(require("./config/db"));
 const auth_1 = require("./utils/auth");
 const auth_2 = require("./middlewares/auth");
+const user_route_1 = __importDefault(require("./module/user/user.route"));
 const app = (0, express_1.default)();
 const PORT = process.env.PORT || 3000;
 app.use(express_1.default.json());
+app.use('/users', user_route_1.default);
 // Health Check / Welcome
 app.get('/', (req, res) => {
     res.json({ message: 'Welcome to BE-RSCR-BP TypeScript API with Prisma & Authentication!' });

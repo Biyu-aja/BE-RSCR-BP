@@ -4,11 +4,13 @@ import express, { Request, Response } from 'express';
 import prisma from './config/db';
 import { hashPassword, comparePassword, generateToken } from './utils/auth';
 import { authenticateJWT, AuthenticatedRequest } from './middlewares/auth';
+import userRouter from './module/user/user.route';
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
+app.use('/users', userRouter);
 
 // Health Check / Welcome
 app.get('/', (req: Request, res: Response) => {
