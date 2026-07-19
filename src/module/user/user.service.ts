@@ -1,25 +1,22 @@
-import { UserRepository } from './user.repository';
+import * as userRepo from './user.repository';
+import { User } from '@prisma/client';
 
-export class UserService {
-  private userRepository = new UserRepository();
+export const createuser = async (data: Omit<User, 'id'>) => {
+  return userRepo.createuser(data);
+}
 
-  async getAllUsers() {
-    return this.userRepository.findAll();
-  }
+export const findAlluser = async () => {
+  return userRepo.findAlluser();
+}
 
-  async getUserById(id: number) {
-    return this.userRepository.findById(id);
-  }
+export const finduserById = async ( id: string ) => {
+  return userRepo.finduserById(id);
+} 
 
-  async createUser(data: any) {
-    return this.userRepository.create(data);
-  }
+export const updateuser = async ( id: string, data: Omit<User, 'id'>) => {
+  return userRepo.updateuser(id, data);
+}
 
-  async updateUser(id: number, data: any) {
-    return this.userRepository.update(id, data);
-  }
-
-  async deleteUser(id: number) {
-    return this.userRepository.delete(id);
-  }
+export const deleteuser = async ( id: string) => {
+  return userRepo.deleteuser(id);
 }

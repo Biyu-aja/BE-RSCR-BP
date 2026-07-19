@@ -1,32 +1,27 @@
 import prisma from '../../config/db';
+import { User } from '@prisma/client';
 
-export class UserRepository {
-  async findAll() {
-    return prisma.user.findMany();
-  }
+export const createuser = async ( data : Omit<User, 'id'>) => {
+  return prisma.user.create({ data });
+}
 
-  async findById(id: number) {
-    return prisma.user.findUnique({
-      where: { id },
-    });
-  }
+export const findAlluser = async () => {
+  return prisma.user.findMany();
+}
 
-  async create(data: any) {
-    return prisma.user.create({
-      data,
-    });
-  }
+export const finduserById = async ( id: string ) => {
+  return prisma.user.findUnique({
+    where: { id }
+  })
+} 
 
-  async update(id: number, data: any) {
-    return prisma.user.update({
-      where: { id },
-      data,
-    });
-  }
+export const updateuser = async ( id: string, data: Omit<User, 'id'>) => {
+  return prisma.user.update({ 
+    where: { id },
+    data
+   });
+}
 
-  async delete(id: number) {
-    return prisma.user.delete({
-      where: { id },
-    });
-  }
+export const deleteuser = async ( id: string) => {
+  return prisma.user.delete({ where : { id } });
 }

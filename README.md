@@ -9,9 +9,9 @@ A robust, production-ready backend boilerplate built with **Express.js**, **Type
 - **TypeScript Core**: Fully typed, clean code with TypeScript.
 - **Express.js Framework**: Fast, unopinionated, minimalist web framework.
 - **Prisma ORM**: Modern database access with built-in support for MySQL, PostgreSQL, and MariaDB.
-- **JWT Authentication & Password Hashing**: Clean registration, login, and protected route handlers using `jsonwebtoken` and `bcrypt`.
+- **JWT Authentication & Password Hashing**: Pre-configured middleware and helper utilities (`jsonwebtoken` & `bcrypt`) to protect routes and hash credentials.
 - **Modular Structure**: Organized under `src/module/<module-name>` containing specific Repository, Service, Controller, and Route files.
-- **Auto-Generating CRUD**: Rapid scaffolding of CRUD operations for any Prisma model using `rscr-cli`.
+- **Auto-Generating CRUD**: Rapid scaffolding of clean, function-based CRUD operations for any Prisma model using `rscr-cli`.
 
 ---
 
