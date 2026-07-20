@@ -25,8 +25,7 @@ if (connectionString.startsWith('mysql://') || connectionString.startsWith('mari
   // Remove empty password colons (e.g. root:@localhost -> root@localhost)
   connectionString = connectionString.replace(':@', '@');
 
-  const pool = mariadb.createPool(connectionString);
-  adapter = new PrismaMariaDb(pool);
+  adapter = new PrismaMariaDb(connectionString);
 
 } else if (connectionString.startsWith('postgresql://') || connectionString.startsWith('postgres://')) {
   // PostgreSQL / Supabase Setup
