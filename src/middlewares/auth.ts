@@ -3,14 +3,11 @@ import { verifyToken } from '../utils/auth';
 
 export interface AuthenticatedRequest extends Request {
   user?: {
-    id: number;
+    id: string;
     email: string;
   };
 }
 
-/**
- * Middleware to protect routes and verify JWT token in authorization header.
- */
 export function authenticateJWT(req: AuthenticatedRequest, res: Response, next: NextFunction) {
   const authHeader = req.headers.authorization;
 
@@ -21,7 +18,7 @@ export function authenticateJWT(req: AuthenticatedRequest, res: Response, next: 
   const token = authHeader.split(' ')[1];
 
   try {
-    const decoded = verifyToken(token) as { id: number; email: string };
+    const decoded = verifyToken(token) as { id: string; email: string };
     req.user = decoded;
     next();
   } catch (error: any) {
