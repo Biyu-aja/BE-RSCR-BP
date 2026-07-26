@@ -116,6 +116,12 @@ Then run the generator command:
 rscr g product
 ```
 
+Or generate all models in your schema at once:
+
+```bash
+rscr g -a
+```
+
 ### What happens under the hood?
 
 1. **Schema Parsing**: `rscr-cli` automatically reads your local `prisma/schema.prisma` file to identify the primary key (ID field name and type).
