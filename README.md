@@ -10,7 +10,11 @@ A robust, production-ready backend boilerplate built with **Express.js**, **Type
 - **Express.js Framework**: Fast, unopinionated, minimalist web framework.
 - **Prisma ORM**: Modern database access with out-of-the-box support for multiple databases (PostgreSQL, MySQL, SQLite, MongoDB, CockroachDB, MariaDB, and Microsoft SQL Server).
 - **JWT Authentication & Password Hashing**: Pre-configured middleware and helper utilities (`jsonwebtoken` & `bcrypt`) to protect routes and hash credentials.
-- **Modular Structure**: Organized under `src/module/<module-name>` containing specific Repository, Service, Controller, and Route files.
+- **Modular Architecture (RSCR)**: Organized under `src/module/<module-name>` following a clean, function-based architectural pattern:
+  - **R**epository: Direct database operations using the Prisma Client.
+  - **S**ervice: Business logic coordination and data flow handling.
+  - **C**ontroller: Express HTTP request/response handling, parameter casting, and status codes.
+  - **R**oute: HTTP router endpoints configuration.
 - **Auto-Generating CRUD**: Rapid scaffolding of clean, function-based CRUD operations for any Prisma model using `rscr-cli` (v1.4.0).
 
 ---
