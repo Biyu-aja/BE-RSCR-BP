@@ -1,6 +1,6 @@
 # BE-RSCR-BP
 
-A robust, production-ready backend boilerplate built with **Express.js**, **TypeScript**, **Prisma ORM**, and **JWT Authentication**. It features an automated CRUD module generator powered by the [`rscr-cli`](https://www.npmjs.com/package/rscr-cli) command-line tool.
+A robust, production-ready backend boilerplate built with **Express.js**, **TypeScript**, **Prisma ORM**, and **JWT Authentication**. It features an automated CRUD module generator powered by the [`rscr-cli`](https://www.npmjs.com/package/rscr-cli) command-line tool (v1.4.0).
 
 ---
 
@@ -8,10 +8,10 @@ A robust, production-ready backend boilerplate built with **Express.js**, **Type
 
 - **TypeScript Core**: Fully typed, clean code with TypeScript.
 - **Express.js Framework**: Fast, unopinionated, minimalist web framework.
-- **Prisma ORM**: Modern database access with built-in support for MySQL, PostgreSQL, and MariaDB.
+- **Prisma ORM**: Modern database access with out-of-the-box support for multiple databases (PostgreSQL, MySQL, SQLite, MongoDB, CockroachDB, MariaDB, and Microsoft SQL Server).
 - **JWT Authentication & Password Hashing**: Pre-configured middleware and helper utilities (`jsonwebtoken` & `bcrypt`) to protect routes and hash credentials.
 - **Modular Structure**: Organized under `src/module/<module-name>` containing specific Repository, Service, Controller, and Route files.
-- **Auto-Generating CRUD**: Rapid scaffolding of clean, function-based CRUD operations for any Prisma model using `rscr-cli`.
+- **Auto-Generating CRUD**: Rapid scaffolding of clean, function-based CRUD operations for any Prisma model using `rscr-cli` (v1.4.0).
 
 ---
 
@@ -82,19 +82,41 @@ The server will be running on `http://localhost:3000`.
 
 ---
 
-## Scaffolding CRUD with `rscr-cli`
+## Scaffolding CRUD with `rscr-cli` (v1.4.0)
 
 You can automatically generate boilerplate repositories, services, controllers, and routes for any model defined in your `prisma/schema.prisma` file using the globally published [`rscr-cli`](https://www.npmjs.com/package/rscr-cli) tool.
 
+> [!NOTE]
+> This boilerplate is configured and tested to work seamlessly with **`rscr-cli` version 1.4.0**.
+
+### Supported Databases
+
+Since the CRUD scaffolding is driven by Prisma ORM, all major databases supported by Prisma are fully supported:
+- **PostgreSQL**
+- **MySQL**
+- **SQLite**
+- **MongoDB**
+- **CockroachDB**
+- **MariaDB**
+- **Microsoft SQL Server**
+
 ### 1. Install CLI Globally
 
-Install the package globally via npm or pnpm:
+Install the specific version (`1.4.0`) globally via npm or pnpm:
 
 ```bash
-npm install -g rscr-cli
+npm install -g rscr-cli@1.4.0
 # or using pnpm
-pnpm add -g rscr-cli
+pnpm add -g rscr-cli@1.4.0
 ```
+
+> [!TIP]
+> If you prefer not to install the CLI globally, you can run the generator command on-demand using `npx` or `pnpm dlx`:
+> ```bash
+> npx rscr-cli@1.4.0 g product
+> # or using pnpm dlx
+> pnpm dlx rscr-cli@1.4.0 g product
+> ```
 
 ### 2. Generate a Module
 
