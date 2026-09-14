@@ -1,58 +1,120 @@
 # BE-RSCR-BP
 
-A robust, production-ready backend boilerplate built with **Express.js**, **TypeScript**, **Prisma ORM**, and **JWT Authentication**. It features an automated CRUD module generator powered by the [`rscr-cli`](https://www.npmjs.com/package/rscr-cli) command-line tool (v1.5.0+), supporting both **4-Layer (RSCR)** and **3-Layer (SCR)** architecture patterns.
+<p align="left">
+  <a href="https://www.typescriptlang.org/"><img src="https://img.shields.io/badge/TypeScript-7.0%2B-3178C6?logo=typescript&logoColor=white" alt="TypeScript" /></a>
+  <a href="https://expressjs.com/"><img src="https://img.shields.io/badge/Express-5.2.1-000000?logo=express&logoColor=white" alt="Express.js" /></a>
+  <a href="https://www.prisma.io/"><img src="https://img.shields.io/badge/Prisma-6.19.0-2D3748?logo=prisma&logoColor=white" alt="Prisma ORM" /></a>
+  <a href="https://www.npmjs.com/package/rscr-cli"><img src="https://img.shields.io/badge/rscr--cli-1.5.0%2B%20(RSCR%20%26%20SCR)-CB3837?logo=npm&logoColor=white" alt="rscr-cli" /></a>
+  <a href="https://pnpm.io/"><img src="https://img.shields.io/badge/pnpm-10.29.2-F69220?logo=pnpm&logoColor=white" alt="pnpm" /></a>
+</p>
+
+> **A database-first REST API boilerplate built with Express.js 5.2, TypeScript 7.0+, and Prisma ORM 6.19. Scaffolds strongly-typed 4-Layer (`RSCR`) and 3-Layer (`SCR`) modules automatically via [`rscr-cli`](https://www.npmjs.com/package/rscr-cli) (v1.5.0+). Out-of-the-box support for PostgreSQL, MySQL, SQLite, MongoDB, CockroachDB, MariaDB, and Microsoft SQL Server.**
 
 ---
 
-## Features
+## 📌 Tech Stack & Versions
 
-- **TypeScript Core**: Fully typed, clean code with TypeScript.
-- **Express.js Framework**: Fast, unopinionated, minimalist web framework.
-- **Prisma ORM**: Modern database access with out-of-the-box support for multiple databases (PostgreSQL, MySQL, SQLite, MongoDB, CockroachDB, MariaDB, and Microsoft SQL Server).
-- **JWT Authentication & Password Hashing**: Pre-configured middleware and helper utilities (`jsonwebtoken` & `bcrypt`) to protect routes and hash credentials.
-- **Flexible Modular Architecture**: Organized under `src/module/<module-name>` with two architectural styles:
-  - **RSCR (4-Layer Pattern)**: `Repository -> Service -> Controller -> Route`
-    - **R**epository: Direct database operations using Prisma Client.
-    - **S**ervice: Business logic coordination and data flow handling.
-    - **C**ontroller: Express HTTP request/response handling, parameter casting, and status codes.
-    - **R**oute: HTTP router endpoints configuration.
-  - **SCR (3-Layer Pattern)**: `Service -> Controller -> Route`
-    - **S**ervice: Direct database operations & business logic (no separate repository file).
-    - **C**ontroller: Express HTTP request/response handling.
-    - **R**oute: HTTP router endpoints configuration.
-- **Auto-Generating CRUD**: Rapid scaffolding of clean, function-based CRUD operations for any Prisma model using `rscr-cli` (v1.5.0+).
+| Component | Technology | Version | Description |
+| :--- | :--- | :--- | :--- |
+| **Language** | [TypeScript](https://www.typescriptlang.org/) | `^7.0.2` | Strongly-typed JavaScript superset for safety and auto-completion |
+| **Web Framework** | [Express.js](https://expressjs.com/) | `^5.2.1` | Fast, unopinionated web framework (Express 5) |
+| **ORM** | [Prisma ORM](https://www.prisma.io/) | `^6.19.0` | Next-generation Node.js and TypeScript ORM |
+| **Scaffolding Tool** | [`rscr-cli`](https://www.npmjs.com/package/rscr-cli) | `v1.5.0+` | Automated CLI generator for RSCR (4-Layer) & SCR (3-Layer) modules |
+| **Authentication** | [jsonwebtoken](https://github.com/auth0/node-jsonwebtoken) & [bcrypt](https://github.com/kelektiv/node.bcrypt.js) | `^9.0.3` / `^6.0.0` | JWT token generation/verification & secure password hashing |
+| **Dev Execution** | [tsx](https://github.com/privatenumber/tsx) | `^4.23.1` | Ultra-fast TypeScript execution and hot-reloading watcher |
+| **Config Loader** | [dotenv](https://github.com/motdotla/dotenv) | `^17.4.2` | Zero-dependency environment variable manager |
+| **Package Manager** | [pnpm](https://pnpm.io/) | `10.29.2` | Fast, disk space-efficient package manager |
 
 ---
 
-## Project Structure
+## 🚀 Key Features
+
+- **Database-First Schema Design**: Model your data in `prisma/schema.prisma` and generate type-safe CRUD APIs instantly.
+- **Dual Architecture Flavors**:
+  - **4-Layer Pattern (`RSCR`)**: `Repository -> Service -> Controller -> Route` for enterprise separation of concerns.
+  - **3-Layer Pattern (`SCR`)**: `Service -> Controller -> Route` for lightweight, rapid development.
+- **Automated CLI Scaffolding**: Built-in support for [`rscr-cli`](https://www.npmjs.com/package/rscr-cli) (v1.5.0+) with smart primary key detection (`Int`, `String`, `UUID`) and automatic router registration in `src/index.ts`.
+- **Multi-Database Support**: Powered by Prisma ORM — works out-of-the-box with:
+  - **PostgreSQL** (`postgresql://...`)
+  - **MySQL** (`mysql://...`)
+  - **SQLite** (`file:./dev.db`)
+  - **MongoDB** (`mongodb://...`)
+  - **CockroachDB** (`postgresql://...`)
+  - **MariaDB** (`mysql://...`)
+  - **Microsoft SQL Server** (`sqlserver://...`)
+- **Pre-configured Authentication**: JWT authentication middleware (`authMiddleware`) and password hashing helpers (`hashPassword`, `comparePassword`).
+- **REST Client Test Suites**: Ready-to-run `.rest` files generated per module for instant API testing in VS Code / JetBrains HTTP Client.
+
+---
+
+## 🏗️ Architecture Styles
 
 ```text
-src/
-├── config/
-│   └── db.ts            # Prisma Client initialization & adapter config
-├── middlewares/
-│   └── auth.ts          # JWT Authentication middleware
-├── module/              # Main application modules
-│   └── user/            # Generated module example
-│       ├── user.controller.ts
-│       ├── user.repository.ts # (Only in RSCR mode)
-│       ├── user.route.ts
-│       ├── user.service.ts
-│       └── user.rest
-├── utils/
-│   └── auth.ts          # Auth helper utilities (hashing, signing)
-└── index.ts             # Application entry point & route registration
+┌────────────────────────────────────────────────────────────────────────┐
+│                        RSCR Pattern (4 Layers)                         │
+│                                                                        │
+│  HTTP Request  ──►  [ Route ]  ──►  [ Controller ]                     │
+│                                            │                           │
+│                                            ▼                           │
+│  Database     ◄──  [ Repository ] ◄── [ Service ]                      │
+└────────────────────────────────────────────────────────────────────────┘
+
+┌────────────────────────────────────────────────────────────────────────┐
+│                         SCR Pattern (3 Layers)                         │
+│                                                                        │
+│  HTTP Request  ──►  [ Route ]  ──►  [ Controller ]                     │
+│                                            │                           │
+│                                            ▼                           │
+│  Database     ◄─────────────────────  [ Service ]                      │
+└────────────────────────────────────────────────────────────────────────┘
+```
+
+| Layer | RSCR Mode (4 Layers) | SCR Mode (3 Layers) | Responsibility |
+| :--- | :--- | :--- | :--- |
+| **Route** | `*.route.ts` | `*.route.ts` | Endpoint definitions, HTTP method mapping, middleware binding |
+| **Controller** | `*.controller.ts` | `*.controller.ts` | Request extraction, parameter type casting, HTTP status responses |
+| **Service** | `*.service.ts` | `*.service.ts` | Business logic, data transformation, multi-repository coordination |
+| **Repository** | `*.repository.ts` | *(Inlined in Service)* | Direct Prisma Client database queries and persistence logic |
+
+---
+
+## 📂 Project Structure
+
+```text
+BE-RSCR-BP/
+├── prisma/
+│   └── schema.prisma        # Prisma schema definitions & datasource config
+├── src/
+│   ├── config/
+│   │   └── db.ts            # Prisma Client singleton initialization
+│   ├── middlewares/
+│   │   └── auth.ts          # JWT Authentication middleware
+│   ├── module/              # Application feature modules
+│   │   └── user/            # Sample generated user module
+│   │       ├── user.controller.ts
+│   │       ├── user.repository.ts # (Present in RSCR mode)
+│   │       ├── user.route.ts
+│   │       ├── user.service.ts
+│   │       └── user.rest    # Ready-to-run REST test requests
+│   ├── utils/
+│   │   └── auth.ts          # Authentication utilities (hash & token helpers)
+│   └── index.ts             # Application entry point & router registrations
+├── .env.example             # Template environment variables
+├── package.json             # Scripts & dependencies
+├── tsconfig.json            # TypeScript compiler configuration
+└── test.rest                # Health check & global endpoint tests
 ```
 
 ---
 
-## Getting Started
+## ⚡ Getting Started
 
 ### Prerequisites
 
-Make sure you have [Node.js](https://nodejs.org/) and [pnpm](https://pnpm.io/) installed.
+- **Node.js**: `v20.x` or `v22.x` (LTS recommended)
+- **pnpm**: `v10.x` (`npm install -g pnpm`)
 
-### 1. Clone & Install Dependencies
+### 1. Installation
 
 ```bash
 pnpm install
@@ -66,15 +128,17 @@ Copy the example environment file and configure your database connection:
 cp .env.example .env
 ```
 
-Open `.env` and set your `DATABASE_URL`:
+Open `.env` and set your credentials:
 
 ```env
 DATABASE_URL="mysql://root:password@localhost:3306/db_name"
+PORT=3000
+JWT_SECRET="your-super-secret-jwt-key"
 ```
 
 ### 3. Run Database Migrations
 
-Generate client and run Prisma migrations to initialize the database schema:
+Generate Prisma Client and apply migrations to your database:
 
 ```bash
 pnpm db:migrate
@@ -82,7 +146,7 @@ pnpm db:migrate
 
 ### 4. Start Development Server
 
-Run the application in development mode with hot-reloading:
+Launch the development server with live reload powered by `tsx`:
 
 ```bash
 pnpm dev
@@ -92,47 +156,36 @@ The server will be running on `http://localhost:3000`.
 
 ---
 
-## Scaffolding CRUD with `rscr-cli` (v1.5.0+)
+## 🛠️ Scaffolding CRUD with `rscr-cli` (v1.5.0+)
 
-You can automatically generate boilerplate CRUD modules for any model defined in your `prisma/schema.prisma` file using the globally published [`rscr-cli`](https://www.npmjs.com/package/rscr-cli) tool.
+Scaffold fully-typed CRUD modules directly from your Prisma models using [`rscr-cli`](https://www.npmjs.com/package/rscr-cli).
 
 > [!NOTE]
 > This boilerplate is configured and tested to work seamlessly with **`rscr-cli` version 1.5.0+**, supporting both **RSCR** (4-layer) and **SCR** (3-layer) patterns.
 
-### Supported Databases
+### 1. Install or Run the CLI
 
-Since the CRUD scaffolding is driven by Prisma ORM, all major databases supported by Prisma are fully supported:
-- **PostgreSQL**
-- **MySQL**
-- **SQLite**
-- **MongoDB**
-- **CockroachDB**
-- **MariaDB**
-- **Microsoft SQL Server**
-
-### 1. Install CLI Globally
-
-Install or update the CLI to the latest version globally via npm or pnpm:
+Install globally:
 
 ```bash
 npm install -g rscr-cli@latest
-# or using pnpm
+# or with pnpm
 pnpm add -g rscr-cli@latest
 ```
 
 > [!TIP]
-> If you prefer not to install the CLI globally, you can run the generator command on-demand using `npx` or `pnpm dlx`:
+> You can also run the CLI on-demand without installing globally:
 > ```bash
-> npx rscr-cli@latest g product
+> npx rscr-cli@latest g <model_name>
 > # or using pnpm dlx
-> pnpm dlx rscr-cli@latest g product
+> pnpm dlx rscr-cli@latest g <model_name>
 > ```
 
 ---
 
-### 2. Generate a Module
+### 2. Define a Model in `prisma/schema.prisma`
 
-Add a new model to your `prisma/schema.prisma` (e.g. `Product`):
+Add a model to your `prisma/schema.prisma` (e.g. `Product`):
 
 ```prisma
 model Product {
@@ -144,10 +197,12 @@ model Product {
 }
 ```
 
-Now, choose your preferred architecture mode:
+---
 
-#### 🔹 Mode A: 4-Layer Pattern (`RSCR`)
-Generates Repository, Service, Controller, and Route files:
+### 3. Generate Module Files
+
+#### 🔹 Mode A: 4-Layer Pattern (`RSCR` - Default)
+Generates `repository`, `service`, `controller`, `route`, and `.rest`:
 
 ```bash
 # Generate single model
@@ -160,7 +215,7 @@ rscr g -a
 ```
 
 #### 🔹 Mode B: 3-Layer Pattern (`SCR`)
-Generates Service (direct DB access), Controller, and Route files without repository layer:
+Generates `service` (with direct DB queries), `controller`, `route`, and `.rest`:
 
 ```bash
 # Using the dedicated scr command
@@ -177,37 +232,50 @@ rscr g product -t scr
 
 ---
 
-### 3. What happens under the hood?
+### 4. What happens under the hood?
 
-1. **Schema Parsing**: `rscr-cli` automatically reads your local `prisma/schema.prisma` file to identify the primary key (`@id` field name and type) and data types.
-2. **Boilerplate Creation**: It generates files inside `src/module/<model>/`:
-   - **Mode RSCR (4 Layers)**:
-     - `<model>.repository.ts`: Direct database access via Prisma.
-     - `<model>.service.ts`: Coordinates business logic operations.
-     - `<model>.controller.ts`: Manages HTTP requests/responses (with automatic ID casting, e.g. `Number(id)` if `Int`).
-     - `<model>.route.ts`: Sets up standard REST endpoints (`GET /`, `GET /:id`, `POST /`, `PUT /:id`, `DELETE /:id`).
-     - `<model>.rest`: Ready-to-use REST client file for quick API testing.
-   - **Mode SCR (3 Layers)**:
-     - `<model>.service.ts`: Direct database queries via Prisma combined with business logic.
-     - `<model>.controller.ts`: Manages HTTP requests/responses.
-     - `<model>.route.ts`: Sets up standard REST endpoints.
-     - `<model>.rest`: Ready-to-use REST client file.
-3. **Auto-registration**: It imports and registers the newly created router automatically in `src/index.ts`:
+1. **Schema Parsing**: `rscr-cli` reads `prisma/schema.prisma` to detect model fields, data types, and primary key types (`Int`, `String`, `UUID`).
+2. **Code Generation**: Generates strongly-typed files in `src/module/<model>/`:
+   - **RSCR (4 Layers)**:
+     - `<model>.repository.ts`: Direct Prisma database operations.
+     - `<model>.service.ts`: Business logic & repository coordination.
+     - `<model>.controller.ts`: Express HTTP request/response handler with automated param casting (e.g., `Number(id)`).
+     - `<model>.route.ts`: Express routes (`GET /`, `GET /:id`, `POST /`, `PUT /:id`, `DELETE /:id`).
+     - `<model>.rest`: Ready-to-run REST test requests.
+   - **SCR (3 Layers)**:
+     - `<model>.service.ts`: Direct Prisma DB access combined with business logic.
+     - `<model>.controller.ts`: HTTP request/response handler.
+     - `<model>.route.ts`: Express routes.
+     - `<model>.rest`: Ready-to-run REST test requests.
+3. **Auto-registration**: Automatically imports and registers router in `src/index.ts`:
    ```typescript
    app.use('/products', productRouter);
    ```
 
 ---
 
-## API Endpoints
+## 📜 Available Scripts
+
+| Script | Command | Description |
+| :--- | :--- | :--- |
+| `pnpm dev` | `tsx watch src/index.ts` | Starts hot-reloading dev server |
+| `pnpm build` | `tsc` | Compiles TypeScript source to `dist/` |
+| `pnpm start` | `tsc && node dist/index.js` | Builds and runs production server |
+| `pnpm db:migrate` | `prisma migrate dev` | Creates and applies new database migrations |
+| `pnpm db:studio` | `prisma studio` | Opens Prisma Studio GUI to inspect/edit database |
+| `pnpm prisma:generate` | `prisma generate` | Generates Prisma Client types from `schema.prisma` |
+
+---
+
+## 📡 API Endpoints
 
 ### Global / Health Check
-- `GET /` - Root endpoint
-- `GET /health` - Health check status
+- `GET /` — API welcome message
+- `GET /health` — Service health status check
 
-### Generated Modules (e.g. Products / Users)
-- `GET /products` - Fetch all products
-- `GET /products/:id` - Fetch product by ID
-- `POST /products` - Create new product
-- `PUT /products/:id` - Update product by ID
-- `DELETE /products/:id` - Delete product by ID
+### Generated Resource Endpoints (e.g., `/users` or `/products`)
+- `GET /<resource>` — Fetch list of records
+- `GET /<resource>/:id` — Fetch record by ID
+- `POST /<resource>` — Create a new record
+- `PUT /<resource>/:id` — Update record by ID
+- `DELETE /<resource>/:id` — Delete record by ID
